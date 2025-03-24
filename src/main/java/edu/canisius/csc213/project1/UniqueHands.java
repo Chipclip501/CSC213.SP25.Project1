@@ -3,6 +3,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 
 
 
@@ -72,12 +73,20 @@ public class UniqueHands {
     }
     // TODO: Implement calculateTotalUniqueHands()
     public static int calculateTotalUniqueHands(int deckSize, int handSize) {
-        return  factorial(deckSize) / (factorial(handSize) * factorial(deckSize - handSize));
+        if(handSize > deckSize){return -1;}
+        BigInteger nFact = factorial(handSize);
+        BigInteger kFact = factorial(deckSize);
+        BigInteger nMinusKFact = factorial( deckSize - handSize);
+        return nFact.divide(kFact.multiply(nMinusKFact)).intValue();
+       
     }
-    public static int factorial(int n) {
-        if (n == 0) {
-            return 1;
+    public static BigInteger factorial(int n) {
+        BigInteger result = BigInteger.ONE;
+        for (int i = 2; i <= n; i++) {
+            result = result.multiply(BigInteger.valueOf(i));  
+
         }
-        return n * factorial(n - 1);
+        System.out.println("this is my result"+result);
+        return result;
     }
 }
