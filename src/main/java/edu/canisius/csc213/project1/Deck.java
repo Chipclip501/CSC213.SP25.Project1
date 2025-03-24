@@ -1,12 +1,16 @@
 package edu.canisius.csc213.project1;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * Represents a deck of playing cards with a configurable size.
  */
 public class Deck {
-    private final List<Card> cards;
+    private final List<Card> cards = new ArrayList<>();
 
     /**
      * Creates a deck with a given size.
@@ -17,8 +21,21 @@ public class Deck {
      */
     public Deck(int size) {
         // TODO: Validate size (must be a multiple of 4 and at most 52).
-        //this is here to show that i changed code to test the commit
+        if(size % 4 != 0 || size > 52 || size < 4){
+            throw new IllegalArgumentException("Deck size must be a multiple of 4 and at most 52.");
+        }
         // TODO: Initialize the deck with the correct cards.
+        Card.Rank[] ranks = Card.Rank.values();
+        int rankIndex = ranks.length - 1; // Start from aces to king queen jack 10 9 ...
+
+        while (cards.size() < size) {
+            for (Card.Suit suit : Card.Suit.values()) {
+                if (cards.size() < size) {
+                    cards.add(new Card(suit, ranks[rankIndex]));
+                }
+            }
+            rankIndex--; 
+        }
     }
 
     /**
@@ -26,6 +43,7 @@ public class Deck {
      */
     public void shuffle() {
         // TODO: Implement shuffle logic.
+        Collections.shuffle(cards);
     }
 
     /**
@@ -36,7 +54,10 @@ public class Deck {
      */
     public Card draw() {
         // TODO: Implement draw logic.
-        return null;
+        if (cards.isEmpty()){
+            throw new NoSuchElementException("Deck is empty");
+        }
+        return cards.remove(0);
     }
 
     /**
@@ -46,6 +67,6 @@ public class Deck {
      */
     public int size() {
         // TODO: Implement size method.
-        return 0;
+        return cards.size();
     }
 }
